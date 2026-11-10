@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Datos de mi negocio</h1>
+<p>Estos datos salen en el encabezado de cada PDF.</p>
+<form method="post">
+  <label>Nombre del negocio <input name="nombre" value="{{ perfil.name }}" required></label>
+  <label>Eslogan <input name="tagline" value="{{ perfil.tagline }}"></label>
+  <label>Responsable <input name="owner" value="{{ perfil.owner }}"></label>
+  <label>Teléfono <input name="telefono" value="{{ perfil.phone }}"></label>
+  <label>Correo <input name="email" type="email" value="{{ perfil.email }}"></label>
+  <label>Dirección <input name="direccion" value="{{ perfil.address }}"></label>
+  <label>RFC <input name="rfc" value="{{ perfil.rfc }}"></label>
+  <label>IVA por defecto (%) <input name="iva" type="number" step="0.01" value="{{ perfil.default_tax_percent }}"></label>
+  <label>Vigencia por defecto (días) <input name="vigencia" type="number" value="{{ perfil.default_validity_days }}"></label>
+  <label>Notas del pie del PDF <input name="notas" value="{{ perfil.notes }}"></label>
+  <button type="submit" class="primario">Guardar</button>
+</form>
+{% endblock %}

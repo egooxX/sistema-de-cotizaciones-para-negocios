@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Sistema de Cotizaciones{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <a href="{{ url_for('panel') }}" class="logo">🧾 Cotizaciones</a>
+  <nav>
+    <a href="{{ url_for('panel') }}">Panel</a>
+    <a href="{{ url_for('lista_cotizaciones') }}">Cotizaciones</a>
+    <a href="{{ url_for('nueva_cotizacion') }}">+ Nueva</a>
+    <a href="{{ url_for('catalogo') }}">Catálogo</a>
+    <a href="{{ url_for('clientes') }}">Clientes</a>
+    <a href="{{ url_for('config') }}">Mi negocio</a>
+  </nav>
+</header>
+<main>
+  {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensaje in mensajes %}
+      <p class="flash {{ categoria }}">{{ mensaje }}</p>
+    {% endfor %}
+  {% endwith %}
+  {% block contenido %}{% endblock %}
+</main>
+<footer>Hecho con Flask por Diego Rodriguez Zamora · Precios en MXN</footer>
+</body>
+</html>

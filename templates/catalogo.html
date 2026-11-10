@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Catálogo</h1>
+<form method="post" class="en-linea">
+  <input name="nombre" placeholder="Nombre" required>
+  <input name="descripcion" placeholder="Descripción">
+  <input name="precio" type="number" step="0.01" min="0" value="0" placeholder="Precio">
+  <input name="unidad" value="pieza" placeholder="Unidad">
+  <input name="categoria" value="General" placeholder="Categoría">
+  <button type="submit">Agregar</button>
+</form>
+<table>
+  <tr><th>Nombre</th><th>Precio</th><th>Unidad</th><th>Categoría</th><th></th></tr>
+  {% for it in items %}
+  <tr>
+    <td>{{ it.name }}{% if it.description %}<br><small>{{ it.description }}</small>{% endif %}</td>
+    <td>{{ it.price | mxn }}</td>
+    <td>{{ it.unit }}</td>
+    <td>{{ it.category }}</td>
+    <td>
+      <form method="post" action="{{ url_for('eliminar_catalogo', item_id=it.id) }}" onsubmit="return confirm('¿Eliminar?')"><button class="peligro">Eliminar</button></form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5">Catálogo vacío. Agrega tus productos o servicios más usados.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

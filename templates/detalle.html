@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Cotización {{ quote.folio }}</h1>
+<p><strong>{{ quote.title }}</strong> · <span class="estado {{ quote.status }}">{{ quote.status }}</span></p>
+<p>Cliente: {{ quote.client_name }}{% if quote.client_company %} · {{ quote.client_company }}{% endif %}{% if quote.client_phone %} · {{ quote.client_phone }}{% endif %}</p>
+<p>Vigente hasta: {{ quote.valid_until }}</p>
+
+<table>
+  <tr><th>Descripción</th><th>Cant.</th><th>Precio unit.</th><th>Importe</th></tr>
+  {% for it in items %}
+  <tr>
+    <td>{{ it.description }}</td>
+    <td>{{ it.quantity }} {{ it.unit }}</td>
+    <td>{{ it.unit_price | mxn }}</td>
+    <td>{{ (it.quantity * it.unit_price) | mxn }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<div class="totales">
+  <p>Subtotal: {{ totales.subtotal | mxn }}</p>
+  <p>Descuento ({{ quote.discount_percent }}%): −{{ totales.descuento | mxn }}</p>
+  <p>IVA ({{ quote.tax_percent }}%): {{ totales.iva | mxn }}</p>
+  <p class="total">Total: {{ totales.total | mxn }} MXN</p>
+</div>
+{% if quote.notes %}<p class="notas">{{ quote.notes }}</p>{% endif %}
+
+<div class="acciones">
+  <a class="boton primario" href="{{ url_for('pdf_cotizacion', quote_id=quote.id) }}">⬇ Descargar PDF</a>
+  <a class="boton" href="{{ wa_url }}" target="_blank" rel="noopener">💬 Enviar por WhatsApp</a>
+  <form method="post" action="{{ url_for('duplicar_cotizacion', quote_id=quote.id) }}"><button>Duplicar</button></form>
+  <form method="post" action="{{ url_for('eliminar_cotizacion', quote_id=quote.id) }}" onsubmit="return confirm('¿Eliminar esta cotización?')"><button class="peligro">Eliminar</button></form>
+</div>
+
+<form method="post" action="{{ url_for('cambiar_estado', quote_id=quote.id) }}" class="estado-form">
+  <label>Cambiar estado
+    <select name="estado">
+      {% for e in estados %}
+      <option value="{{ e }}" {% if quote.status == e %}selected{% endif %}>{{ e }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button type="submit">Guardar estado</button>
+</form>
+{% endblock %}

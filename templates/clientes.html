@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Clientes</h1>
+<table>
+  <tr><th>Nombre</th><th>Empresa</th><th>Teléfono</th><th>Correo</th></tr>
+  {% for c in clientes %}
+  <tr><td>{{ c.name }}</td><td>{{ c.company }}</td><td>{{ c.phone }}</td><td>{{ c.email }}</td></tr>
+  {% else %}
+  <tr><td colspan="4">Aún no hay clientes. Se guardan automáticamente al crear una cotización.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

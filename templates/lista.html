@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Cotizaciones</h1>
+<form method="get" class="filtros">
+  <input type="search" name="q" placeholder="Buscar folio, cliente o título" value="{{ busqueda }}">
+  <select name="estado">
+    <option value="">Todos los estados</option>
+    {% for e in estados %}
+    <option value="{{ e }}" {% if estado == e %}selected{% endif %}>{{ e }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+{% if cotizaciones %}
+<table>
+  <tr><th>Folio</th><th>Cliente</th><th>Estado</th><th>Vigencia</th><th>Total</th><th></th></tr>
+  {% for q in cotizaciones %}
+  <tr>
+    <td>{{ q.folio }}</td>
+    <td>{{ q.client_name }}</td>
+    <td><span class="estado {{ q.status }}">{{ q.status }}</span></td>
+    <td>{{ q.valid_until }}</td>
+    <td>{{ totales[q.id].total | mxn }}</td>
+    <td><a href="{{ url_for('detalle_cotizacion', quote_id=q.id) }}">Ver</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No hay cotizaciones con ese filtro.</p>
+{% endif %}
+{% endblock %}
